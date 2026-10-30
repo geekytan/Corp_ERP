@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: corperp-db
+    environment:
+      POSTGRES_USER: corperp
+      POSTGRES_PASSWORD: corperp
+      POSTGRES_DB: corperp
+    ports:
+      - "5432:5432"
+    volumes:
+      - corperp_pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  corperp_pgdata:
