@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CorpERP
 
-## Getting Started
+## Overview
+CorpERP is a corporate ERP web application designed for a single company to manage human resources.
+It provides complete modules for employee directories, daily self-attendance tracking, leave workflows, and monthly payroll processing.
+The system features role-based access control across four distinct user roles: Admin, HR, Manager, and Employee.
 
-First, run the development server:
+## Prerequisites
+- Node.js 22 LTS
+- Docker Desktop OR local PostgreSQL 16
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Setup
+1. Clone the repository and navigate into the project directory:
+   ```bash
+   cd corperp
+   ```
+2. Install all dependencies:
+   ```bash
+   npm install
+   ```
+3. Copy environment configuration:
+   ```bash
+   cp .env.example .env
+   ```
+4. Start the database container (if using Docker):
+   ```bash
+   npm run db:up
+   ```
+5. Initialize schema migrations and seed the database:
+   ```bash
+   npm run setup
+   ```
+6. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Local PostgreSQL without Docker
+If running PostgreSQL locally without Docker, connect to your PostgreSQL instance using `psql` or pgAdmin as a superuser and run:
+```sql
+CREATE USER corperp WITH PASSWORD 'corperp';
+CREATE DATABASE corperp OWNER corperp;
+ALTER USER corperp CREATEDB;
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Demo Accounts
+All seeded accounts use the default password: `Password@123`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Role | Email | Name | Department | Designation |
+|---|---|---|---|---|
+| ADMIN | `admin@corperp.com` | Aarav Mehta | Operations | System Administrator |
+| HR | `hr@corperp.com` | Priya Sharma | Human Resources | HR Manager |
+| MANAGER | `manager@corperp.com` | Rohan Verma | Engineering | Engineering Manager |
+| EMPLOYEE | `employee@corperp.com` | Sneha Iyer | Engineering | Software Engineer |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Useful Commands
+The project defines the following npm scripts:
 
-## Learn More
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the Next.js development server |
+| `npm run build` | Build the Next.js production bundle |
+| `npm run start` | Start the production server |
+| `npm run db:up` | Start the PostgreSQL container via Docker Compose |
+| `npm run db:migrate` | Run pending Prisma schema migrations |
+| `npm run db:seed` | Seed the database with demo data |
+| `npm run db:reset` | Reset the database and re-apply all migrations |
+| `npm run db:studio` | Launch Prisma Studio GUI at http://localhost:5555 |
+| `npm run setup` | Generate Prisma client, apply migrations, and seed data |
 
-To learn more about Next.js, take a look at the following resources:
+## Reset Data
+To reset the database back to its clean initial demo state at any time, run:
+```bash
+npm run db:reset && npm run db:seed
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Documentation & DBMS Project Report
+Comprehensive academic documentation and project specifications are available in the [`docs/`](docs/) directory:
+- **DBMS Project Report**: [`docs/CorpERP_DBMS_Project_Report.docx`](docs/CorpERP_DBMS_Project_Report.docx)
+- **Architecture & ER Figures**: [`docs/figures/`](docs/figures/)
+  - `image4.png`: Three-Tier System Architecture
+  - `image5.png`: Normalized Entity-Relationship (ER) Diagram
+  - `image6.png`: Data Flow Diagram Level 0 (Context Diagram)
+  - `image7.png`: Data Flow Diagram Level 1 (Functional Decomposition)
+  - `image8.png` – `image12.png`: Production UI Interfaces & Clean Printable Salary Slip
+- **Specifications & Testing Guides**: [`docs/specs/`](docs/specs/)
+  - `BUILD.md`: Master specification, business rules, and API contracts
+  - `INTEGRATION.md`: Integration plan, 15-step live demo script, and QA checklist
+  - `REPORT_NOTES.md`: Worked payroll algorithms, 28 QA test cases, and viva Q&A
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
